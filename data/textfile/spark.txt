@@ -1,0 +1,3 @@
+Process finished with exit code
+Intellij reacts to changes in your Maven pom.xml file. Maven does not react to changes in your IntelliJ project module settings.
+I found a pretty old post with this question but unfortunately he didn't get any help. I hope someone can assist me.
