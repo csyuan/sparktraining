@@ -14,7 +14,7 @@ object PopularMovieAnalyzer {
 
     val DATA_PATH = "./data/ml-1m/"
     val users = sc.textFile(DATA_PATH + "users.dat").map(line => line.split("::"))
-      .map(user => (user(0),(user(1),user(2)))).filter(_._2._1.equals("F"))
+      .map(user => (user(0),(user(1),user(2)))).filter(x => x._2._1.equals("F"))
       .filter(_._2._2 >= "18").filter(_._2._2 <= "24")
 
 
@@ -23,10 +23,17 @@ object PopularMovieAnalyzer {
     val userSet = HashSet() ++ userlist
     val broadcastUserSet = sc.broadcast(userSet)
 
-    val topKmovies = ratingsRdd.map(_.split("::")).map(x => (x(0),x(1)))
-      .filter(x => broadcastUserSet.value.contains(x._1)).map(x => (x._2,1))
-      .reduceByKey(_+_).map(x=>(x._2,x._1)).sortByKey(false)
-      .map(x => (x._2,x._1)).take(10)
+    val topKmovies = ratingsRdd.map(_.split("::")).map { x =>
+      (x(0),x(1))
+    }.filter { x =>
+      broadcastUserSet.value.contains(x._1)
+    }.map { x =>
+      (x._2,1)
+    }.reduceByKey(_+_).map { x=>
+      (x._2,x._1)
+    }.sortByKey(false).map { x =>
+      (x._2,x._1)
+    }.take(10)
 
     val moviesRdd = sc.textFile(DATA_PATH + "movies.dat")
 
