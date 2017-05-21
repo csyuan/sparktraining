@@ -22,12 +22,12 @@ object BiasFunc {
     val conf = new SparkConf().setAppName("app").setMaster("local")
     val spark = SparkSession.builder().config(conf).getOrCreate()
     val sc = spark.sparkContext
-    val kmeansData = KMeansDataGenerator.generateKMeansRDD(sc, 40,3,2,1.0,2)
-    kmeansData.foreach(println)
+//    val kmeansData = KMeansDataGenerator.generateKMeansRDD(sc, 40,3,2,1.0,2)
+//    kmeansData.foreach(println)
 //    kmeansData.map(_.mkString(" ")).take(10).foreach(println)
 
-    val linearData = LinearDataGenerator.generateLinearRDD(sc, 40,3,1.0,2)
-//    linearData.take(10).foreach(println)
+    val linearData = LinearDataGenerator.generateLinearRDD(sc, 1000,5,1.0,1)
+    linearData.saveAsTextFile("./data/mllib/linearRegression_data")
     spark.close()
   }
 }

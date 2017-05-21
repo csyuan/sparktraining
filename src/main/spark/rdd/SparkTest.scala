@@ -1,8 +1,10 @@
 package rdd
 
+import breeze.linalg.{norm, DenseVector => BDV}
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.{SparkConf, SparkContext}
-
+import org.apache.spark.mllib.linalg.{Vector, Vectors}
+import org.apache.spark.rdd.RDD
 /**
   * Created by slyuan on 17-4-17.
   */
@@ -21,6 +23,7 @@ object SparkTest {
 
 //    val rdd = sc.parallelize(List((1,-1),(1,2),(1,4),(1,9)),2)
 //    rdd.foreach(println)
+
 //    def seq(a:Int, b:Int): Int = {
 //      println("seq: " + a + "\t" + b)
 //      println(math.max(a,b))
@@ -52,6 +55,7 @@ object SparkTest {
 
     val data = Array((1,1.0),(1,2.0),(1,3.0),(2,4.0),(2,5.0),(2,6.0))
     val rdd = sc.parallelize(data)
+
     rdd.groupByKey().map((p:(Int, Iterable[Double])) => (p._1, p._2.sum)).foreach(println)
     spark.close()
   }
